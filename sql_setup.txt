@@ -19,13 +19,20 @@ CREATE TABLE contributors
      email    VARCHAR(32) NOT NULL 
   ); 
 
-CREATE TABLE malware 
+CREATE TABLE malware_admin 
   ( 
      id             SERIAL PRIMARY KEY, 
      malware_name   VARCHAR(32) NOT NULL UNIQUE, 
-     signature      VARCHAR(32) NOT NULL, 
-     contributor_id BIGINT(20) UNSIGNED, 
-     admin_id       BIGINT(20) UNSIGNED, 
-     FOREIGN KEY(contributor_id) REFERENCES contributors(id), 
+     signature      VARCHAR(128) NOT NULL,  
+     admin_id       BIGINT(20) UNSIGNED NOT NULL,
      FOREIGN KEY(admin_id) REFERENCES admins(id) 
+  ); 
+
+CREATE TABLE malware_contrib 
+  ( 
+     id             SERIAL PRIMARY KEY, 
+     malware_name   VARCHAR(32) NOT NULL UNIQUE, 
+     signature      VARCHAR(128) NOT NULL,  
+     contributor_id BIGINT(20) UNSIGNED NOT NULL,
+     FOREIGN KEY(contributor_id) REFERENCES contributors(id)
   ); 
