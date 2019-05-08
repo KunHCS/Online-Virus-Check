@@ -46,13 +46,13 @@ function registerContributor($connection)
     $temp_pw = password_hash($temp_pw, PASSWORD_BCRYPT);
 
     $statement = $connection->prepare("INSERT INTO contributors (username, password, email) VALUES(?,?,?)");
-
     $statement->bind_param('sss', $temp_un, $temp_pw, $temp_em);
     $statement->execute();
     if ($statement->error) {
         die("An error has occured, please try again.");
     }
     $statement->close();
+
     echo "<h1>successfully registered</h1>";
     return true;
 }
