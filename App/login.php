@@ -24,8 +24,8 @@ echo <<< _END
 
 <body>
     <form action="login.php" method="POST">
-        <input type="text" name="username" placeholder="enter username" required>
-        <input type="password" name="password" placeholder="enter password" required>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
 
         <select name="role">
             <option value="contributor">contributor</option>
@@ -79,7 +79,7 @@ function authenticate($connection)
 
             $un = $assoc['username'];
             echo "<h1>Hi $un, you are now logged in</h1>";
-            // echo "<a href='hw5.php'>click here to continue</a>";
+            echo "<a href='upload.php'>click here to continue</a>";
             // header("refresh:3; url=hw5.php");
             return true;
         } else {
