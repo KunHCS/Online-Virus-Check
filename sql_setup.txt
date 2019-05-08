@@ -1,0 +1,31 @@
+CREATE DATABASE project; 
+
+USE project; 
+
+CREATE TABLE admins 
+  ( 
+     id        SERIAL PRIMARY KEY, 
+     firstname VARCHAR(32) NOT NULL, 
+     lastname  VARCHAR(32) NOT NULL, 
+     username  VARCHAR(32) NOT NULL UNIQUE, 
+     password  VARCHAR(32) NOT NULL 
+  ); 
+
+CREATE TABLE contributors 
+  ( 
+     id       SERIAL PRIMARY KEY, 
+     username VARCHAR(32) NOT NULL UNIQUE, 
+     password VARCHAR(32) NOT NULL, 
+     email    VARCHAR(32) NOT NULL 
+  ); 
+
+CREATE TABLE malware 
+  ( 
+     id             SERIAL PRIMARY KEY, 
+     malware_name   VARCHAR(32) NOT NULL UNIQUE, 
+     signature      VARCHAR(32) NOT NULL, 
+     contributor_id BIGINT(20) UNSIGNED, 
+     admin_id       BIGINT(20) UNSIGNED, 
+     FOREIGN KEY(contributor_id) REFERENCES contributors(id), 
+     FOREIGN KEY(admin_id) REFERENCES admins(id) 
+  ); 
