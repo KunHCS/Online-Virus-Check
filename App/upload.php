@@ -112,6 +112,11 @@ function uploadFile($conn, $role, $id)
         $signature = mysql_entities_fix_string($conn, $signature);
         fclose($fh);
 
+        if (empty($signature)) {
+            $statement->close();
+            die('Empty File');
+        }
+
         $statement->bind_param('ssi', $temp_Name, $signature, $id);
 
         $statement->execute();
