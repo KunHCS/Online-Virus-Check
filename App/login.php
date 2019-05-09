@@ -19,10 +19,13 @@ echo <<< _END
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Admin/Contributor Login</title>
 </head>
 
 <body>
+<p class="text-center mb-0">
+<a class="text-center" href="main.php">Return to main page</a>
+</p>
     <form action="login.php" method="POST">
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
@@ -80,7 +83,7 @@ function authenticate($connection)
             $un = $assoc['username'];
             echo "<h1>Hi $un, you are now logged in</h1>";
             echo "<a href='upload.php'>click here to continue</a>";
-            // header("refresh:3; url=hw5.php");
+            header("refresh:2; url=upload.php");
             return true;
         } else {
             die("invalid username/password");

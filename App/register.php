@@ -23,9 +23,9 @@ echo <<< _END
 </head>
 
 <body>
-<p class="text-center mb-0">
-<a class="text-center" href="main.php">Return to main page</a>
-</p>
+    <p class="text-center mb-0">
+        <a class="text-center" href="main.php">Return to main page</a>
+    </p>
     <form action="register.php" method="POST" autocomplete="off">
 
         <input type="text" name="username" placeholder="Username" required>

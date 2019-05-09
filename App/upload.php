@@ -5,6 +5,7 @@ require_once 'utils.php';
 
 ini_set('session.use_only_cookies', 1);
 session_start();
+session_regenerate_id();
 
 if (isset($_SESSION['username'])) {
     if ($_SESSION['check'] != hash('ripemd128', $_SERVER['REMOTE_ADDR'] .
@@ -63,11 +64,12 @@ echo <<<_END
                 <h2 class="text-center">Welcome, $username</h2>
                 <h5 class="text-center">Role: $role</h5>
                 <p class="text-center mb-0">
+                <a class="text-center" href="logout.php">Logout</a>
+            </p>
+                <p class="text-center">
                     <a class="text-center" href="main.php">Return to main page</a>
                 </p>
-                <p class="text-center">
-                    <a class="text-center" href="logout.php">Logout</a>
-                </p>
+
                 <form class="px-4 py-5 border" action="upload.php" method="post" autocomplete="off"
                     enctype='multipart/form-data'>
                     <div class="form-group">
