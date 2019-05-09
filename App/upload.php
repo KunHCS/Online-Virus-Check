@@ -21,10 +21,10 @@ if (isset($_SESSION['username'])) {
     $role = $_SESSION['role'];
 
 } else {
-    echo "<h1>You are not logged in, redirecting to main page</h1>";
-    echo "<a href='main.php'>Click here to log in</a>";
-    header("refresh:2; url=main.php");
-    return;
+    echo "<h1>You are not logged in</h1>";
+    echo "<a href='login.php'>Click here to log in</a>";
+    header("refresh:1.5; url=login.php");
+    die();
 }
 
 $conn = new mysqli($hn, $un, $pw, $db);
@@ -60,7 +60,7 @@ echo <<<_END
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-5 mt-5 mx-auto">
+            <div class="col-md-5 mt-3 mx-auto">
                 <h2 class="text-center">Welcome, $username</h2>
                 <h5 class="text-center">Role: $role</h5>
                 <p class="text-center mb-0">
@@ -110,9 +110,13 @@ function uploadFile($conn, $role, $id)
         }
 
         $fh = fopen($_FILES['File']['tmp_name'], "r") or die("Failed to open file");
-        $signature = fread($fh, 20);
-        $signature = mysql_entities_fix_string($conn, $signature);
+        if (flock($fh, LOCK_SH)) {
+            $signature = fread($fh, 20);
+            flock($fh, LOCK_UN);
+        }
         fclose($fh);
+
+        $signature = mysql_entities_fix_string($conn, $signature);
 
         if (empty($signature)) {
             $statement->close();

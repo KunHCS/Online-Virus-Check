@@ -9,8 +9,6 @@ if ($conn->connect_error) {
     die($conn->connect_error);
 }
 
-if (registerContributor($conn)) {return;}
-
 echo <<< _END
 <!DOCTYPE html>
 <html lang="en">
@@ -19,20 +17,30 @@ echo <<< _END
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
     <title>Contributor Registration</title>
 </head>
+_END;
 
+if (registerContributor($conn)) {
+    header("refresh:2; url=main.php");
+    die();
+}
+
+echo <<< _END
 <body>
-    <p class="text-center mb-0">
-        <a class="text-center" href="main.php">Return to main page</a>
-    </p>
-    <form action="register.php" method="POST" autocomplete="off">
-
+    <form class="mt-2 ml-1" action="register.php" method="POST" autocomplete="off">
         <input type="text" name="username" placeholder="Username" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="submit" name="submit" value="Register">
     </form>
+    <p class="mt-1 ml-1">
+        <a href="main.php">Return to main page</a>
+    </p>
 </body>
 
 </html>
@@ -47,6 +55,13 @@ function registerContributor($connection)
     $temp_pw = mysql_entities_fix_string($connection, $_POST['password']);
     $temp_em = mysql_entities_fix_string($connection, $_POST['email']);
 
+    if (!preg_match_all('/^[a-zA-Z_-]+$/', $temp_un) || empty($temp_un)) {
+        die('Invalid/Empty Username');
+    }
+    if (!filter_var($temp_em, FILTER_VALIDATE_EMAIL) || empty($temp_em)) {
+        die('Invalid/Empty Email');
+    }
+
     $temp_pw = password_hash($temp_pw, PASSWORD_BCRYPT);
 
     $statement = $connection->prepare("INSERT INTO contributors (username, password, email) VALUES(?,?,?)");
@@ -57,6 +72,6 @@ function registerContributor($connection)
     }
     $statement->close();
 
-    echo "<h1>successfully registered</h1>";
+    echo "<h1 class='text-center'>Successfully registered</h1>";
     return true;
 }

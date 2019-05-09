@@ -19,14 +19,16 @@ echo <<< _END
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
     <title>Admin/Contributor Login</title>
 </head>
 
 <body>
-<p class="text-center mb-0">
-<a class="text-center" href="main.php">Return to main page</a>
-</p>
-    <form action="login.php" method="POST">
+
+    <form class="mt-2 ml-1" action="login.php" method="POST">
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
 
@@ -34,10 +36,11 @@ echo <<< _END
             <option value="contributor">contributor</option>
             <option value="admin">admin</option>
         </select>
-
         <input type="submit" name="submit" value="Log In">
-
     </form>
+    <p class="mt-2 ml-1">
+        <a href="main.php">Return to main page</a>
+    </p>
 </body>
 
 </html>
@@ -81,9 +84,9 @@ function authenticate($connection)
                 $_SERVER['HTTP_USER_AGENT']);
 
             $un = $assoc['username'];
-            echo "<h1>Hi $un, you are now logged in</h1>";
+            echo "<h1>Hello $un, you are now logged in</h1>";
             echo "<a href='upload.php'>click here to continue</a>";
-            header("refresh:2; url=upload.php");
+            header("refresh:1.5; url=upload.php");
             return true;
         } else {
             die("invalid username/password");

@@ -66,9 +66,12 @@ function malwareCheck($conn)
     }
 
     $fh = fopen($_FILES['File']['tmp_name'], "r") or die("Failed to open file");
-    $signature = fread($fh, 20);
-    $signature = mysql_entities_fix_string($conn, $signature);
+    if (flock($fh, LOCK_SH)) {
+        $signature = fread($fh, 20);
+        flock($fh, LOCK_UN);
+    }
     fclose($fh);
+    $signature = mysql_entities_fix_string($conn, $signature);
 
     $query = "SELECT signature FROM malware_admin";
     $result = $conn->query($query);
