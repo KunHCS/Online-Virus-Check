@@ -18,7 +18,7 @@ echo <<<_END
 <body>
     <div class='container'>
         <div class='row'>
-            <div class='col-md-6 mx-auto'>
+            <div class='col-md-6 mx-auto mt-4'>
                 <h2 class='mb-3'>Welcome to Online Virus Checker</h2>
                 <a href="check.php">Run Check</a><br>
                 <a href="upload.php">Upload New Malware</a><br>

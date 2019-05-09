@@ -38,7 +38,7 @@ echo <<<_END
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-5 mt-5 mx-auto">
+            <div class="col-md-5 mt-4 mx-auto">
                 <h2 class="text-center">Online Virus Checker</h2>
                 <p class="text-center">
                     <a class="text-center" href="main.php">Return to main page</a>
