@@ -22,7 +22,7 @@ if (isset($_SESSION['username'])) {
 } else {
     echo "<h1>You are not logged in, redirecting to main page</h1>";
     echo "<a href='main.php'>Click here to log in</a>";
-    header("refresh:3; url=main.php");
+    header("refresh:2; url=main.php");
     return;
 }
 
@@ -48,7 +48,7 @@ echo <<<_END
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
-    <title>Homework 4 - Kun He</title>
+    <title>Malware Upload</title>
     <style>
         label {
             font-weight: 600;
@@ -62,6 +62,9 @@ echo <<<_END
             <div class="col-md-5 mt-5 mx-auto">
                 <h2 class="text-center">Welcome, $username</h2>
                 <h5 class="text-center">Role: $role</h5>
+                <p class="text-center mb-0">
+                    <a class="text-center" href="main.php">Return to main page</a>
+                </p>
                 <p class="text-center">
                     <a class="text-center" href="logout.php">Logout</a>
                 </p>
@@ -69,7 +72,7 @@ echo <<<_END
                     enctype='multipart/form-data'>
                     <div class="form-group">
                         <label for="name">Malware Name</label>
-                        <input class="form-control" type="text" name="Name" placeholder="Enter Name"
+                        <input class="form-control" type="text" name="Name" placeholder="Malware Name"
                             required>
                     </div>
                     <div class="form-group">

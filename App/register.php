@@ -23,10 +23,14 @@ echo <<< _END
 </head>
 
 <body>
-    <form action="register.php" method="POST">
-        <input type="email" name="email" placeholder="enter email" required>
-        <input type="text" name="username" placeholder="enter username" required>
-        <input type="password" name="password" placeholder="enter password" required>
+<p class="text-center mb-0">
+<a class="text-center" href="main.php">Return to main page</a>
+</p>
+    <form action="register.php" method="POST" autocomplete="off">
+
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
         <input type="submit" name="submit" value="Register">
     </form>
 </body>
