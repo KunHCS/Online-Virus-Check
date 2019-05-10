@@ -11,6 +11,8 @@ if ($conn->connect_error) {
 
 if (authenticate($conn)) {return;}
 
+$conn->close();
+
 echo <<< _END
 <!DOCTYPE html>
 <html lang="en">
@@ -89,10 +91,12 @@ function authenticate($connection)
             header("refresh:1.5; url=upload.php");
             return true;
         } else {
-            die("invalid username/password");
+            jsAlert("invalid username/password");
+            die();
         }
     } else {
-        die("invalid username/password");
+        jsAlert("invalid username/password");
+        die();
     }
     return false;
 }

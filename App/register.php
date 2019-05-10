@@ -22,6 +22,7 @@ echo <<< _END
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
     <title>Contributor Registration</title>
+    <script src="validate.js"></script>
 </head>
 _END;
 
@@ -30,9 +31,12 @@ if (registerContributor($conn)) {
     die();
 }
 
+$conn->close();
+
 echo <<< _END
 <body>
-    <form class="mt-2 ml-1" action="register.php" method="POST" autocomplete="off">
+    <form class="mt-2 ml-1" action="register.php" method="POST" autocomplete="off"
+        onsubmit="return validateForm(this)">
         <input type="text" name="username" placeholder="Username" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
@@ -55,12 +59,20 @@ function registerContributor($connection)
     $temp_pw = mysql_entities_fix_string($connection, $_POST['password']);
     $temp_em = mysql_entities_fix_string($connection, $_POST['email']);
 
+    $fail = "";
     if (!preg_match_all('/^[a-zA-Z_-]+$/', $temp_un) || empty($temp_un)) {
-        die('Invalid/Empty Username');
+        $fail .= 'Invalid/Empty Username\n';
+
     }
     if (!filter_var($temp_em, FILTER_VALIDATE_EMAIL) || empty($temp_em)) {
-        die('Invalid/Empty Email');
+        $fail .= 'Invalid/Empty Email\n';
     }
+    if ($fail != "") {
+        jsAlert($fail);
+        die();
+    }
+
+    $temp_em = strtolower($temp_em);
 
     $temp_pw = password_hash($temp_pw, PASSWORD_BCRYPT);
 
@@ -68,7 +80,12 @@ function registerContributor($connection)
     $statement->bind_param('sss', $temp_un, $temp_pw, $temp_em);
     $statement->execute();
     if ($statement->error) {
-        die("An error has occured, please try again.");
+        //jsAlert("An error has occured, please try again.");
+        if ($statement->errno == 1062) {
+            jsAlert('Username already exist');
+            die();
+        }
+        die($statement->error);
     }
     $statement->close();
 

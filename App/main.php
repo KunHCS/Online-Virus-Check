@@ -1,4 +1,4 @@
-<?php //HomePage.php
+<?php
 echo <<<_END
 <!DOCTYPE html>
 <html lang="en">

@@ -4,6 +4,7 @@ require_once 'config.php';
 require_once 'utils.php';
 
 ini_set('session.use_only_cookies', 1);
+ini_set('session.gc_maxlifetime', 60 * 30);
 session_start();
 session_regenerate_id();
 
@@ -12,7 +13,7 @@ if (isset($_SESSION['username'])) {
         $_SERVER['HTTP_USER_AGENT'])) {
         destroy_session_and_data();
         echo "encountered technical error, please log in again";
-        echo "<a href='main.php'>Click here to log in</a>";
+        echo "<a href='login.php'>Click here to log in</a>";
         return;
     }
 
@@ -49,6 +50,7 @@ echo <<<_END
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
+        <script src="validate.js"></script>
     <title>Malware Upload</title>
     <style>
         label {
@@ -64,18 +66,18 @@ echo <<<_END
                 <h2 class="text-center">Welcome, $username</h2>
                 <h5 class="text-center">Role: $role</h5>
                 <p class="text-center mb-0">
-                <a class="text-center" href="logout.php">Logout</a>
-            </p>
+                    <a class="text-center" href="logout.php">Logout</a>
+                </p>
                 <p class="text-center">
                     <a class="text-center" href="main.php">Return to main page</a>
                 </p>
 
                 <form class="px-4 py-5 border" action="upload.php" method="post" autocomplete="off"
-                    enctype='multipart/form-data'>
+                    enctype='multipart/form-data' onsubmit="return validateMalwareForm(this)">
                     <div class="form-group">
                         <label for="name">Malware Name</label>
-                        <input class="form-control" type="text" name="Name" placeholder="Malware Name"
-                            required>
+                        <input class="form-control" type="text" name="Name"
+                            placeholder="Malware Name" required>
                     </div>
                     <div class="form-group">
                         <label for="file">File</label>
@@ -98,7 +100,8 @@ function uploadFile($conn, $role, $id)
         $temp_Name = mysql_entities_fix_string($conn, $_POST['Name']);
         $regex = '/^[a-zA-Z0-9]+$/';
         if (!preg_match_all($regex, $temp_Name) || empty($temp_Name)) {
-            die('Invalid/Empty Malware Name');
+            jsAlert('Invalid/Empty Malware Name');
+            die();
         }
 
         $query = $role == 'admin' ? "INSERT INTO malware_admin (malware_name, signature, admin_id) VALUES(?,?,?)" :
@@ -120,7 +123,8 @@ function uploadFile($conn, $role, $id)
 
         if (empty($signature)) {
             $statement->close();
-            die('Empty File');
+            jsAlert('Empty File Signature');
+            die();
         }
 
         $statement->bind_param('ssi', $temp_Name, $signature, $id);
