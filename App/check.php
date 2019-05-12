@@ -73,6 +73,12 @@ function malwareCheck($conn)
     fclose($fh);
     $signature = mysql_entities_fix_string($conn, $signature);
 
+    if (empty($signature)) {
+        $conn->close();
+        jsAlert('Empty File Signature');
+        die();
+    }
+
     $query = "SELECT signature FROM malware_admin";
     $result = $conn->query($query);
     if (!$result) {

@@ -1,4 +1,5 @@
 <?php
+// Run mannually only on first start up
 
 require_once 'config.php';
 

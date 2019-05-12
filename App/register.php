@@ -27,6 +27,7 @@ echo <<< _END
 _END;
 
 if (registerContributor($conn)) {
+    $conn->close();
     header("refresh:2; url=main.php");
     die();
 }

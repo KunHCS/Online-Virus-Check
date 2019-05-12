@@ -109,6 +109,7 @@ function uploadFile($conn, $role, $id)
 
         $statement = $conn->prepare($query);
         if ($conn->connect_error) {
+            $statement->close();
             die($conn->connect_error);
         }
 
@@ -122,6 +123,7 @@ function uploadFile($conn, $role, $id)
         $signature = mysql_entities_fix_string($conn, $signature);
 
         if (empty($signature)) {
+            $conn->close();
             $statement->close();
             jsAlert('Empty File Signature');
             die();
@@ -131,9 +133,10 @@ function uploadFile($conn, $role, $id)
 
         $statement->execute();
         if ($statement->error) {
+            $conn->close();
             die($statement->error);
         }
         $statement->close();
-        phpRedirectSelf();
+        jsAlert("Upload successful");
     }
 }

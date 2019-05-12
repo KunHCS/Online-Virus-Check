@@ -9,7 +9,10 @@ if ($conn->connect_error) {
     die($conn->connect_error);
 }
 
-if (authenticate($conn)) {return;}
+if (authenticate($conn)) {
+    $conn->close();
+    return;
+}
 
 $conn->close();
 
@@ -91,11 +94,11 @@ function authenticate($connection)
             header("refresh:1.5; url=upload.php");
             return true;
         } else {
-            jsAlert("invalid username/password");
+            jsAlert("invalid username/password for $temp_role");
             die();
         }
     } else {
-        jsAlert("invalid username/password");
+        jsAlert("invalid username/password for $temp_role");
         die();
     }
     return false;
